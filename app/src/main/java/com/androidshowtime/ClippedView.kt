@@ -21,4 +21,22 @@ class ClippedView @JvmOverloads constructor(
             }
     //create path to locally store the path of what has been drawn
     private val path = Path()
+
+
+    //variables for dimensions for a clipping rectangle
+    private val clipRectRight = resources.getDimension(R.dimen.clipRectRight)
+    private val clipRectBottom = resources.getDimension(R.dimen.clipRectBottom)
+    private val clipRectTop = resources.getDimension(R.dimen.clipRectTop)
+    private val clipRectLeft = resources.getDimension(R.dimen.clipRectLeft)
+
+    //variables for the inset of a rectangle and offset of a small rect
+    private val rectInset = resources.getDimension(R.dimen.rectInset   )
+    private val smallRectOffset = resources.getDimensionPixelOffset(R.dimen.smallRectOffset)
+
+    //radius of a circle drawn inside the rectangle
+    private val circleRadius = resources.getDimension(R.dimen.circleRadius)
+
+    //offset and textSize for the text drawn inside rectangle
+    private val textOffset = resources.getDimension(R.dimen.textOffset)
+    private val textSize = resources.getDimension(R.dimen.textSize)
         }
