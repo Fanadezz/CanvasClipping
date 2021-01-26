@@ -1,6 +1,7 @@
 package com.androidshowtime
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
@@ -53,4 +54,55 @@ class ClippedView @JvmOverloads constructor(
     private val rowFour = rowThree + rectInset + clipRectBottom
     private val textRow = rowFour + (1.5f * clipRectBottom)
 
-        }
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+
+        drawBackAndUnclippedRectangle(canvas)
+        drawDifferenceClippingExample(canvas)
+        drawCircularClippingExample(canvas)
+        drawIntersectionClippingExample(canvas)
+        drawCombinedClippingExample(canvas)
+        drawRoundedRectangleClippingExample(canvas)
+        drawOutsideClippingExample(canvas)
+        drawSkewedTextExample(canvas)
+        drawTranslatedTextExample(canvas)
+    }
+
+    private fun drawTranslatedTextExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawSkewedTextExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawOutsideClippingExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawCombinedClippingExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawIntersectionClippingExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawCircularClippingExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawDifferenceClippingExample(canvas: Canvas?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun drawBackAndUnclippedRectangle(canvas: Canvas?) {
+
+    }
+}
+
+
