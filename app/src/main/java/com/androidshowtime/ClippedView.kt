@@ -2,24 +2,26 @@ package com.androidshowtime
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.res.TypedArrayUtils.getText
 
 class ClippedView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(
         context, attrs, defStyleAttr) {
 
 
-            private val paint = Paint().apply {
+    private val paint = Paint().apply {
 
-                strokeWidth = resources.getDimension(R.dimen.strokeWidth)
-                textSize = resources.getDimension(R.dimen.textSize)
+        strokeWidth = resources.getDimension(R.dimen.strokeWidth)
+        textSize = resources.getDimension(R.dimen.textSize)
 
-                //smooth out edges without affecting the shape
-                isAntiAlias = true
-            }
+        //smooth out edges without affecting the shape
+        isAntiAlias = true
+    }
     //create path to locally store the path of what has been drawn
     private val path = Path()
 
@@ -31,7 +33,7 @@ class ClippedView @JvmOverloads constructor(
     private val clipRectLeft = resources.getDimension(R.dimen.clipRectLeft)
 
     //variables for the inset of a rectangle and offset of a small rect
-    private val rectInset = resources.getDimension(R.dimen.rectInset   )
+    private val rectInset = resources.getDimension(R.dimen.rectInset)
     private val smallRectOffset = resources.getDimensionPixelOffset(R.dimen.smallRectOffset)
 
     //radius of a circle drawn inside the rectangle
@@ -101,6 +103,43 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawBackAndUnclippedRectangle(canvas: Canvas?) {
+
+    }
+
+    //method for drawing the blueprint rectangle
+
+    private fun drawClippedRectangle(canvas: Canvas) {
+        /*Canvas.clipRect(left, top, right, bottom) reduces the region
+        of the screen that future draw operations can write to*/
+        //clip rectangle
+        canvas.clipRect(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom)
+
+        //change canvas regional color
+        canvas.drawColor(Color.WHITE)
+
+        //change paint color in preparation to draw a line
+        paint.color = Color.RED
+
+        //draw line
+        canvas.drawLine(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom, paint)
+
+        //draw circle
+        canvas.drawCircle(circleRadius, clipRectBottom - circleRadius, circleRadius, paint)
+
+        //change paint color to blue in preparation to draw text
+        paint.color = Color.BLUE
+
+        //set textSize
+        paint.textSize = textSize
+
+        //set alignment
+
+        /*Paint.Align specifies which side of the text to aligh to the origin
+        * and not which side of origin the text goes*/
+        paint.textAlign = Paint.Align.RIGHT
+
+        //drawText
+        canvas.drawText(context.getString(R.string.clipping),clipRectRight,textOffset,paint)
 
     }
 }
