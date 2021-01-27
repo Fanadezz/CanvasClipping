@@ -56,7 +56,7 @@ class ClippedView @JvmOverloads constructor(
     private val rowFour = rowThree + rectInset + clipRectBottom
     private val textRow = rowFour + (1.5f * clipRectBottom)
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         drawBackAndUnclippedRectangle(canvas)
@@ -70,39 +70,59 @@ class ClippedView @JvmOverloads constructor(
         drawTranslatedTextExample(canvas)
     }
 
-    private fun drawTranslatedTextExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+    private fun drawTranslatedTextExample(canvas: Canvas) {
+
     }
 
     private fun drawSkewedTextExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun drawOutsideClippingExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun drawCombinedClippingExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun drawIntersectionClippingExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun drawCircularClippingExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun drawDifferenceClippingExample(canvas: Canvas?) {
-        TODO("Not yet implemented")
+
     }
 
-    private fun drawBackAndUnclippedRectangle(canvas: Canvas?) {
+    private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
+//change color
+        canvas.drawColor(Color.GRAY)
+
+
+        /*Saves the current matrix and clip onto a private stack.
+
+Subsequent calls to translate,scale,rotate,skew,concat or clipRect, clipPath will
+all operate as usual, but when the balancing call to restore() is made, those
+calls will be forgotten, and the settings that existed before the save() will
+be reinstated.*/
+        //save
+        canvas.save()
+
+        canvas.translate(columnOne, rowOne)
+
+
+        drawClippedRectangle(canvas)
+
+//restore the canvas to its previous state
+        canvas.restore()
 
     }
 
@@ -122,7 +142,8 @@ class ClippedView @JvmOverloads constructor(
 
         //draw line
         canvas.drawLine(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom, paint)
-
+//change paint color in preparation to drawing a green 
+        paint.color = Color. GREEN
         //draw circle
         canvas.drawCircle(circleRadius, clipRectBottom - circleRadius, circleRadius, paint)
 
