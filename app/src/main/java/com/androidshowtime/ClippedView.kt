@@ -55,6 +55,14 @@ class ClippedView @JvmOverloads constructor(
     private val rowFour = rowThree + rectInset + clipRectBottom
     private val textRow = rowFour + (1.5f * clipRectBottom)
 
+//RectF is a class that holds rectangle coordinates in floating point
+    private var rectF = RectF(
+            rectInset,
+            rectInset,
+            clipRectRight - rectInset,
+            clipRectBottom - rectInset
+                             )
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 myDrawBackAndUnclippedRectangle(canvas)
@@ -187,7 +195,21 @@ canvas.withTranslation (columnTwo, rowTwo){
 
         }
     }
+    private fun drawRoundedRectangleClippingExample(canvas: Canvas) {
 
+        canvas.withTranslation(columnTwo,rowThree){
+
+            path.rewind()
+            path.addRoundRect(
+                    rectF,clipRectRight / 4,
+                    clipRectRight / 4, Path.Direction.CCW
+                             )
+            canvas.clipPath(path)
+            drawClippedRectangle(canvas)
+
+        }
+
+    }
 
     private fun drawTranslatedTextExample(canvas: Canvas) {
 
@@ -201,9 +223,7 @@ canvas.withTranslation (columnTwo, rowTwo){
 
     }
 
-    private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {
 
-    }
 
 
 
