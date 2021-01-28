@@ -1,13 +1,12 @@
 package com.androidshowtime
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.res.TypedArrayUtils.getText
+import androidx.core.graphics.withTranslation
+import timber.log.Timber
 
 class ClippedView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(
@@ -58,8 +57,8 @@ class ClippedView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        drawBackAndUnclippedRectangle(canvas)
+myDrawBackAndUnclippedRectangle(canvas)
+        //drawBackAndUnclippedRectangle(canvas)
         drawDifferenceClippingExample(canvas)
         drawCircularClippingExample(canvas)
         drawIntersectionClippingExample(canvas)
@@ -69,6 +68,71 @@ class ClippedView @JvmOverloads constructor(
         drawSkewedTextExample(canvas)
         drawTranslatedTextExample(canvas)
     }
+
+    private fun myDrawBackAndUnclippedRectangle(canvas: Canvas) {
+
+        canvas.withTranslation(columnOne, rowOne) {
+
+
+            drawColor(Color.GRAY)
+
+            drawClippedRectangle(canvas)
+        }
+    }
+    private fun drawDifferenceClippingExample(canvas: Canvas) {
+// Move the origin to the right for the next rectangle.
+        canvas.withTranslation (columnTwo, rowOne){
+            // Use the subtraction of two clipping rectangles to create a frame.
+            canvas.clipRect(
+                    2 * rectInset,2 * rectInset,
+                    clipRectRight - 2 * rectInset,
+                    clipRectBottom - 2 * rectInset
+                           )
+            // The method clipRect(float, float, float, float, Region.Op
+            // .DIFFERENCE) was deprecated in API level 26. The recommended
+            // alternative method is clipOutRect(float, float, float, float),
+            // which is currently available in API level 26 and higher.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+                canvas.clipRect(
+                        4 * rectInset,4 * rectInset,
+                        clipRectRight - 4 * rectInset,
+                        clipRectBottom - 4 * rectInset,
+                        Region.Op.DIFFERENCE
+                               )
+            else {
+                canvas.clipOutRect(
+                        4 * rectInset,4 * rectInset,
+                        clipRectRight - 4 * rectInset,
+                        clipRectBottom - 4 * rectInset
+                                  )
+            }
+            drawClippedRectangle(canvas)
+        }
+
+    }
+
+    private fun drawCircularClippingExample(canvas: Canvas) {
+        canvas.withTranslation (columnOne, rowTwo){
+            // Clears any lines and curves from the path but unlike reset(),
+            // keeps the internal data structure for faster reuse.
+            path.rewind()
+            path.addCircle(
+                    circleRadius,clipRectBottom - circleRadius,
+                    circleRadius,Path.Direction.CCW
+                          )
+            // The method clipPath(path, Region.Op.DIFFERENCE) was deprecated in
+            // API level 26. The recommended alternative method is
+            // clipOutPath(Path), which is currently available in
+            // API level 26 and higher.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                canvas.clipPath(path, Region.Op.DIFFERENCE)
+            } else {
+                canvas.clipOutPath(path)
+            }
+            drawClippedRectangle(canvas)
+
+
+        }}
 
     private fun drawTranslatedTextExample(canvas: Canvas) {
 
@@ -94,16 +158,14 @@ class ClippedView @JvmOverloads constructor(
 
     }
 
-    private fun drawCircularClippingExample(canvas: Canvas?) {
 
-    }
 
-    private fun drawDifferenceClippingExample(canvas: Canvas?) {
 
-    }
+
+
 
     private fun drawBackAndUnclippedRectangle(canvas: Canvas) {
-//change color
+        //change color
         canvas.drawColor(Color.GRAY)
 
 
@@ -113,7 +175,7 @@ Subsequent calls to translate,scale,rotate,skew,concat or clipRect, clipPath wil
 all operate as usual, but when the balancing call to restore() is made, those
 calls will be forgotten, and the settings that existed before the save() will
 be reinstated.*/
-        //save
+        //save the current state of canvas
         canvas.save()
 
         canvas.translate(columnOne, rowOne)
@@ -121,9 +183,13 @@ be reinstated.*/
 
         drawClippedRectangle(canvas)
 
-//restore the canvas to its previous state
+        //Restores the previous state of the canvas that was saved
         canvas.restore()
 
+        val translateCheckpoint = canvas.save()
+        Timber.i("The checkpoint is: $translateCheckpoint")
+        val translateCheckpoint2 = canvas.save()
+        Timber.i("The checkpoint 2 is: $translateCheckpoint2")
     }
 
     //method for drawing the blueprint rectangle
@@ -142,8 +208,8 @@ be reinstated.*/
 
         //draw line
         canvas.drawLine(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom, paint)
-//change paint color in preparation to drawing a green 
-        paint.color = Color. GREEN
+        //change paint color in preparation to drawing a green
+        paint.color = Color.GREEN
         //draw circle
         canvas.drawCircle(circleRadius, clipRectBottom - circleRadius, circleRadius, paint)
 
@@ -160,9 +226,11 @@ be reinstated.*/
         paint.textAlign = Paint.Align.RIGHT
 
         //drawText
-        canvas.drawText(context.getString(R.string.clipping),clipRectRight,textOffset,paint)
+        canvas.drawText(context.getString(R.string.clipping), clipRectRight, textOffset, paint)
 
     }
+
+
 }
 
 
