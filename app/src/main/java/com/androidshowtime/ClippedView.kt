@@ -197,8 +197,17 @@ canvas.withTranslation(columnTwo, rowTwo){
         canvas.restore()
     }
 
-    private fun drawSkewedTextExample(canvas: Canvas?) {
-
+    private fun drawSkewedTextExample(canvas: Canvas) {
+        canvas.save()
+        paint.color = Color.YELLOW
+        paint.textAlign = Paint.Align.RIGHT
+        // Position text.
+        canvas.translate(columnTwo, textRow)
+        // Apply skew transformation.
+        canvas.skew(0.2f, 0.3f)
+        canvas.drawText(context.getString(R.string.skewed),
+                        clipRectLeft, clipRectTop, paint)
+        canvas.restore()
     }
 
     private fun drawOutsideClippingExample(canvas: Canvas) {
