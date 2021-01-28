@@ -219,7 +219,14 @@ canvas.withTranslation (columnTwo, rowTwo){
 
     }
 
-    private fun drawOutsideClippingExample(canvas: Canvas?) {
+    private fun drawOutsideClippingExample(canvas: Canvas) {
+        canvas.withTranslation(columnOne,rowFour){
+            canvas.clipRect(2 * rectInset,2 * rectInset,
+                            clipRectRight - 2 * rectInset,
+                            clipRectBottom - 2 * rectInset)
+            drawClippedRectangle(canvas)
+
+        }
 
     }
 
