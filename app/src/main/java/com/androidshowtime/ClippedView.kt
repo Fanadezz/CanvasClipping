@@ -167,6 +167,28 @@ canvas.withTranslation (columnTwo, rowTwo){
 }
     }
 
+    private fun drawCombinedClippingExample(canvas: Canvas) {
+        canvas.withTranslation(columnOne, rowThree){
+            path.rewind()
+            path.addCircle(
+                    clipRectLeft + rectInset + circleRadius,
+                    clipRectTop + circleRadius + rectInset,
+                    circleRadius,Path.Direction.CCW
+                          )
+            path.addRect(
+                    clipRectRight / 2 - circleRadius,
+                    clipRectTop + circleRadius + rectInset,
+                    clipRectRight / 2 + circleRadius,
+                    clipRectBottom - rectInset,Path.Direction.CCW
+                        )
+            canvas.clipPath(path)
+            drawClippedRectangle(canvas)
+
+
+        }
+    }
+
+
     private fun drawTranslatedTextExample(canvas: Canvas) {
 
     }
@@ -183,9 +205,7 @@ canvas.withTranslation (columnTwo, rowTwo){
 
     }
 
-    private fun drawCombinedClippingExample(canvas: Canvas?) {
 
-    }
 
 
 
